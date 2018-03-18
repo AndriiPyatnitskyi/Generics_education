@@ -1,29 +1,33 @@
+import java.io.Serializable;
+
 public class Main {
-    //  Используем GenericClass без дженериков
-    //  Опасно!!!
-    static <T> void add(GenericClass<T> genericClass) {
-        genericClass.setT((T) "qwerty");
-    }
 
     public static void main(String[] args) {
-        GenericClass<Integer> genericClass = new GenericClass();
-        add(genericClass);
-        // ClassCastException
-        Integer integer = genericClass.getT();
+        One one = new One<>(new Job());
+        one.myMethod();
     }
 
 }
 
-class GenericClass<T> {
-    private T t;
-
-    public T getT() {
-        return t;
+class Job implements Serializable {
+    void printJob() {
+        System.out.println("job");
     }
+}
 
-    public void setT(T t) {
+
+//  Добавляем интерфейсы
+class One<T extends Job & Serializable> {
+    One(T t) {
         this.t = t;
     }
+
+    private T t;
+
+    public void myMethod() {
+        t.printJob();
+    }
+
 }
 
 
