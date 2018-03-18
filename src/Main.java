@@ -1,41 +1,29 @@
 public class Main {
+    //  Используем GenericClass без дженериков
+    //  Опасно!!!
+    static <T> void add(GenericClass<T> genericClass) {
+        genericClass.setT((T) "qwerty");
+    }
 
     public static void main(String[] args) {
-        One one = new One<>(new Job());
-        one.myMethod();
-
-        //  Так же в качестве Job у нас его подтип SubJob
-        One one1 = new One<>(new SubJob());
-        one1.myMethod();
+        GenericClass<Integer> genericClass = new GenericClass();
+        add(genericClass);
+        // ClassCastException
+        Integer integer = genericClass.getT();
     }
 
 }
 
-class Job {
-    void printJob() {
-        System.out.println("job");
-    }
-}
-
-class SubJob extends Job{
-    void printJob() {
-        System.out.println("sub job");
-    }
-}
-
-//  Расширяем поведение для переменной t,
-//  после установки дженерика <T extends Job> у t появился новый метод
-class One<T extends Job> {
-    One(T t) {
-        this.t = t;
-    }
-
+class GenericClass<T> {
     private T t;
 
-    public void myMethod() {
-        t.printJob();
+    public T getT() {
+        return t;
     }
 
+    public void setT(T t) {
+        this.t = t;
+    }
 }
 
 
